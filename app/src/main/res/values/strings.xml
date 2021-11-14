@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Mobile</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="welcome">Welcome to To Do List!</string>
+    <string name="error">No matching with the previous password</string>
+</resources>
