@@ -12,7 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Version1">
 
-
+        <fragment
+            android:name=".ExampleDialog"
+            android:exported="true" />
+        <activity
+            android:name=".List2"
+            android:exported="true" />
         <activity
             android:name=".ListActivity"
             android:exported="true" />
