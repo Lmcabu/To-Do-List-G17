@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF"
-    tools:context=".LogIn">
+    tools:context=".LoginActivity">
 
 
 
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:backgroundTint="@color/design_default_color_background"
-                    android:onClick="goToSignup"
+                    android:onClick="goToSignUp"
                     android:text="@string/sign_up"
 
                     android:textAllCaps="false"

@@ -1,34 +1,25 @@
 package com.example.version1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.ProgressDialog;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-
-
-import android.os.Bundle;
 
 
 import android.widget.EditText;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.textfield.TextInputEditText;
+
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
-import org.json.JSONObject;
-
-public class LogIn extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     EditText etUsername, etPassword;
 
@@ -38,7 +29,7 @@ public class LogIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_login);
 
         viewInitializations();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -107,30 +98,34 @@ public class LogIn extends AppCompatActivity {
             final String Login_URL = "http://188.166.255.8:8080/login";
 
 
-            final StringRequest stringRequest = new StringRequest(Request.Method.POST, Login_URL, response -> {
+            final StringRequest stringRequest = new StringRequest(Request.Method.POST, Login_URL,
 
-                // TODO: Set up a progress bar
-                try {
+                    // on response
+                    response -> {
+                         // TODO: Set up a progress bar
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String password1 = jsonObject.getString("password");
+                            String username1 = jsonObject.getString("username");
+                            Toast.makeText(getApplicationContext(), password1+"  "+ username1, Toast.LENGTH_LONG).show();
+                        }
 
-                    System.out.println("response");
-                    JSONObject jsonObject = new JSONObject(response);
+                        // the exception may be raised in jsonObject.getString()
+                        catch (Exception e) {
+                            Log.e("StringReq onRes Except",e.toString());
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "Registration Error !1" + e, Toast.LENGTH_LONG).show();
+                        }
+                    },
 
+                    //
+                    error -> {
+                        //aProgressBar.dismiss();
+                        Log.e("err", error.toString());
+                        Toast.makeText(getApplicationContext(), "Registration Error !2" + error, Toast.LENGTH_LONG).show();
+                    })
 
-                    // String success = jsonObject.getString("success");
-                    // String message = jsonObject.getString("message");
-
-                    String password1 = jsonObject.getString("name");
-                    String username1 = jsonObject.getString("username");
-
-                    Toast.makeText(getApplicationContext(), "Logged In  Success", Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Registration Error !1" + e, Toast.LENGTH_LONG).show();
-                }
-            }, error -> {
-                //aProgressBar.dismiss();
-                Toast.makeText(getApplicationContext(), "Registration Error !2" + error, Toast.LENGTH_LONG).show();
-            }) {
+            {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
@@ -145,6 +140,11 @@ public class LogIn extends AppCompatActivity {
         }
     }
 
-        }
+
+    public void goToSignUp(View v) {
+        // Open your SignUp Activity if the user wants to signup
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
+
 }

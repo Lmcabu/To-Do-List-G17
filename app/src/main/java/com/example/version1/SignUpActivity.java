@@ -3,6 +3,7 @@ package com.example.version1;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -12,17 +13,20 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 
 
-public class SignUp extends AppCompatActivity {
+
+public class SignUpActivity extends AppCompatActivity {
 
     EditText etFirstName, etLastName, etEmail, etPassword, etRepeatPassword;
     final int MIN_PASSWORD_LENGTH = 6;
@@ -44,7 +48,10 @@ public class SignUp extends AppCompatActivity {
         etRepeatPassword = findViewById(R.id.et_repeat_password);
 
         // To show back button in actionbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
     }
 
     public boolean onSupportNavigateUp() {
@@ -108,22 +115,62 @@ public class SignUp extends AppCompatActivity {
 
             String firstName = etFirstName.getText().toString().trim();
             String lastName = etLastName.getText().toString().trim();
-            String email = etEmail.getText().toString().trim();
+
+            //Attention: xianxian set the username to be the combination of user's firstname+lastname without any space between them
+            String username=firstName+lastName;
+
             String password = etPassword.getText().toString().trim();
-            String repeatPassword = etRepeatPassword.getText().toString().trim();
 
-            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
+            //TODO server要不要加这个email？
+            String email = etEmail.getText().toString().trim();
 
-            // call you API
-            String URL = "http://188.166.255.8:8080";
+
+            // generate a json string
+
+            try {
+                String paraJsonStr = new JSONObject().put("username", username)
+                        .put("password", password).toString();
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+
+
+
+            // call API
+            String URL = "http://188.166.255.8:8080/api/v1/users";
+
+
+            // generate a json string
+
+            try {
+                String paraJsonStr = new JSONObject().put("username", username)
+                        .put("password", password).toString();
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+
+
+
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+
+
                             try{
                                 // after success response from server
+                                // JSONObject jsonObject = new JSONObject(response);
+                                // String username=jsonObject.getString("username");
+                                // String password=jsonObject.getString("password");
+
+                                // Log.i("regis info(u+p)", username+"   "+password);
+                                Toast.makeText(getApplicationContext(),"Registration Success",Toast.LENGTH_LONG).show();
                             } catch (Exception e) {
-                                // if any exception is been cought
+                                // if any exception is been caught
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(),"Registration Error !1"+e,Toast.LENGTH_LONG).show();
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -131,17 +178,20 @@ public class SignUp extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
 
                     // if server fails to response on time
-
+                    Toast.makeText(getApplicationContext(),"Registration Error !2"+error,Toast.LENGTH_LONG).show();
                 }
             })
             {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String,String> params = new HashMap<>();
-                    // params.put("name",sname); // passing parameters to server
+                    params.put("name",username);
+                    params.put("password",password);
                     return params;
                 }
             };
+
+
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
 
