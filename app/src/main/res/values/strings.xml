@@ -8,4 +8,6 @@
     <string name="welcome_msg">Let you arrange your life in a few seconds</string>
     <string name="sign_in_upper">Sign In</string>
     <string name="sign_up_upper">Sign Up</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
 </resources>
