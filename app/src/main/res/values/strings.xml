@@ -9,5 +9,7 @@
     <string name="sign_in_upper">Sign In</string>
     <string name="sign_up_upper">Sign Up</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

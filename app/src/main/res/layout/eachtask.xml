@@ -11,48 +11,40 @@
         android:layout_margin="4dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageTaskAllTaskPage"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/txtTaskNameAllTaskPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/imageView"
-            android:text="List Name"
+            android:layout_toEndOf="@+id/imageTaskAllTaskPage"
+            android:text="Task Name"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:id="@+id/textTaskDetailAllTaskPage"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/txtTaskNameAllTaskPage"
             android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/imageView"
-            android:text="Task: \n 123 \n 123 \n 123 \n 123\n 123\n 123"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView2"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/imageView"
-            android:text="Completed Task: \n 123 \n 123 \n 123"
+            android:layout_toEndOf="@+id/imageTaskAllTaskPage"
+            android:text="Detail: \n Test 1111111111111111111111111111111111111111111111111111111111111111"
             android:textSize="15sp" />
 
         <ImageView
-            android:id="@+id/image_delete"
+            android:id="@+id/imageCompleteStatusAllTaskPage"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_delete" />
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="2dp"
+            android:src="@drawable/ic_baseline_close" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

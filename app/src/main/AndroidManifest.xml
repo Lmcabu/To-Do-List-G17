@@ -11,9 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Version1">
+        <activity
+            android:name=".CreateNewList"
+            android:exported="true" />
 
-        <fragment
-            android:name=".ExampleDialog"
+        <activity
+            android:name=".AllTask"
             android:exported="true" />
         <activity
             android:name=".List2"

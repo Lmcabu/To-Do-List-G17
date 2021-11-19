@@ -3,7 +3,6 @@ package com.example.version1;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +17,7 @@ public class eAdapter extends RecyclerView.Adapter<eAdapter.ExampleViewHolder> {
 
     public interface OnItemClickListener{
         void onItemClick(int position);
+        void onDeleteClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -28,11 +28,16 @@ public class eAdapter extends RecyclerView.Adapter<eAdapter.ExampleViewHolder> {
         public ImageView mImageView;
         public TextView mTextView;
         public TextView mTextView2;
+        public TextView mTextView3;
+        public ImageView mDelteImage;
+
         public ExampleViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.imageView);
             mTextView = itemView.findViewById(R.id.textView);
             mTextView2 = itemView.findViewById(R.id.textView2);
+            mTextView3 = itemView.findViewById(R.id.textView3);
+            mDelteImage = itemView.findViewById(R.id.image_delete);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -41,6 +46,17 @@ public class eAdapter extends RecyclerView.Adapter<eAdapter.ExampleViewHolder> {
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
                             listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+            mDelteImage.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onDeleteClick(position);
                         }
                     }
                 }
@@ -65,6 +81,7 @@ public class eAdapter extends RecyclerView.Adapter<eAdapter.ExampleViewHolder> {
         holder.mImageView.setImageResource(currentItem.getmImageResource());
         holder.mTextView.setText(currentItem.getText1());
         holder.mTextView2.setText(currentItem.getText2());
+        holder.mTextView3.setText(currentItem.getText3());
     }
 
     @Override

@@ -7,15 +7,29 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import java.io.*;
 
 
 import android.widget.EditText;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText etUsername, etPassword;
 
     // Is there any constrain on password?
-    final int MIN_PASSWORD_LENGTH = 6;
+    final int MIN_PASSWORD_LENGTH = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,59 +105,75 @@ public class LoginActivity extends AppCompatActivity {
             String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
 
-            Toast.makeText(this,"Login Success",Toast.LENGTH_SHORT).show();
+            String requestStr="username="+username+"&password="+password;
+            HttpURLConnection connection = null;
 
-            // call API
-            // aProgressBar.show()
-            final String Login_URL = "http://188.166.255.8:8080/login";
+            try {
+                //Create connection
+                URL url = new URL("http://188.166.255.8:8080/login");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
 
+                connection.setRequestProperty("Content-Length",
+                        Integer.toString(requestStr.getBytes().length));
+                // connection.setRequestProperty("Content-Language", "en-US");
 
-            final StringRequest stringRequest = new StringRequest(Request.Method.POST, Login_URL,
+                connection.setUseCaches(false);
+                connection.setDoOutput(true);
 
-                    // on response
-                    response -> {
-                         // TODO: Set up a progress bar
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String password1 = jsonObject.getString("password");
-                            String username1 = jsonObject.getString("username");
-                            Toast.makeText(getApplicationContext(), password1+"  "+ username1, Toast.LENGTH_LONG).show();
-                        }
+                //Send request
+                DataOutputStream wr = new DataOutputStream (
+                        connection.getOutputStream());
+                wr.writeBytes(requestStr);
+                wr.close();
 
-                        // the exception may be raised in jsonObject.getString()
-                        catch (Exception e) {
-                            Log.e("StringReq onRes Except",e.toString());
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Registration Error !1" + e, Toast.LENGTH_LONG).show();
-                        }
-                    },
+                //Get Response
+                InputStream is = connection.getInputStream();
 
-                    //
-                    error -> {
-                        //aProgressBar.dismiss();
-                        Log.e("err", error.toString());
-                        Toast.makeText(getApplicationContext(), "Registration Error !2" + error, Toast.LENGTH_LONG).show();
-                    })
-
-            {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("username", username);
-                    params.put("password", password);
-                    return params;
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+                StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                    response.append('\r');
                 }
-            };
+                rd.close();
 
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
+                Toast.makeText(getApplicationContext(),"Login Success!",Toast.LENGTH_SHORT).show();
+                goToList();
+
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Registration Error !" + e, Toast.LENGTH_LONG).show();
+
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
         }
-    }
+
+
+
+
+
+        }
+
 
 
     public void goToSignUp(View v) {
-        // Open your SignUp Activity if the user wants to signup
+        // Open SignUp Activity if the user wants to signup
         Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToList() {
+        // Open list activity
+        Intent intent = new Intent(this, ListActivity.class);
         startActivity(intent);
     }
 

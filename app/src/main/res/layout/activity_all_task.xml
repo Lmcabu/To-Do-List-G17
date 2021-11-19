@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".ListActivity" >
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerViewAllTaskPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="100dp"
@@ -16,12 +16,12 @@
         android:scrollbars="vertical" />
 
     <Button
-        android:id="@+id/button_insert_ALlListPage"
+        android:id="@+id/button_insert_ALlTaskPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="290dp"
         android:layout_marginBottom="22dp"
-        android:text="insert" />
+        android:text="New Task" />
 </RelativeLayout>
