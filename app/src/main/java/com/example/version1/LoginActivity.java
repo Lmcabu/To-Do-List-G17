@@ -105,63 +105,53 @@ public class LoginActivity extends AppCompatActivity {
             String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
 
-            String requestStr="username="+username+"&password="+password;
-            HttpURLConnection connection = null;
+            String requestStr = "username=" + username + "&password=" + password;
 
-            try {
-                //Create connection
-                URL url = new URL("http://188.166.255.8:8080/login");
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type",
-                        "application/x-www-form-urlencoded");
+            String URL="http://188.166.255.8:8080/login";
 
-                connection.setRequestProperty("Content-Length",
-                        Integer.toString(requestStr.getBytes().length));
-                // connection.setRequestProperty("Content-Language", "en-US");
-
-                connection.setUseCaches(false);
-                connection.setDoOutput(true);
-
-                //Send request
-                DataOutputStream wr = new DataOutputStream (
-                        connection.getOutputStream());
-                wr.writeBytes(requestStr);
-                wr.close();
-
-                //Get Response
-                InputStream is = connection.getInputStream();
-
-                BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-                StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    response.append(line);
-                    response.append('\r');
+            StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
+                    goToList();
                 }
-                rd.close();
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Registration Error !" + error, Toast.LENGTH_LONG).show();
 
-                Toast.makeText(getApplicationContext(),"Login Success!",Toast.LENGTH_SHORT).show();
-                goToList();
-
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Registration Error !" + e, Toast.LENGTH_LONG).show();
-
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
                 }
-            }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("username", username);
+                    params.put("password", password);
+
+
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(sr);
         }
+    }
 
 
 
 
 
-        }
+
+
+
 
 
 
