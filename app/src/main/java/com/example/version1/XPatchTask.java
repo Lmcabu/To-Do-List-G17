@@ -28,14 +28,19 @@ public class XPatchTask extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.activity_posttask);
+        setContentView(R.layout.activity_patchtask);
+
+        // To show back button in actionbar
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         buttonUpdate = findViewById(R.id.updateTask);
         buttonDelete = findViewById(R.id.update_delete);
         /*
         buttonBack = findViewById(R.id.post_back);
          */
-        checkbox = findViewById(R.id.checkbox);
+        checkbox = findViewById(R.id.doneCheck);
 
         taskTitle = findViewById(R.id.update_Title);
         taskDetail = findViewById(R.id.update_detail);

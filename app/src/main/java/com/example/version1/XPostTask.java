@@ -21,12 +21,17 @@ import java.util.Map;
 public class XPostTask extends AppCompatActivity {
     private Button buttonCreate, buttonBack;
     private EditText taskTitle, taskDetail;
-    private String listId="61996683c80418710bb0b3bc";
+    //private String listId="61996683c80418710bb0b3bc";
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_posttask);
+
+        // To show back button in actionbar
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         buttonCreate = findViewById(R.id.postTask);
         /*
@@ -78,7 +83,7 @@ public class XPostTask extends AppCompatActivity {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("title", title);
                 params.put("details", detail);
-                params.put("listId", listId);
+                //params.put("listId", listId);
                 System.out.println("asdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdaddasdasdasdasdasd");
                 return params;
             }
