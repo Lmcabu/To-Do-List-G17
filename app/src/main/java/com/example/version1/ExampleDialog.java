@@ -27,7 +27,7 @@ public class ExampleDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.fragment_example_dialog, null);
 
         builder.setView(view)
-                .setTitle("Your Task")
+                .setTitle("Task")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
