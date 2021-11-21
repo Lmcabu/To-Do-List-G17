@@ -3,6 +3,7 @@ package com.example.version1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
 
     // Is there any constrain on password?
     final int MIN_PASSWORD_LENGTH = 3;
+
+
+    String cookie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
             String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
 
-            String requestStr = "username=" + username + "&password=" + password;
+            // String requestStr = "username=" + username + "&password=" + password;
 
             String URL="http://188.166.255.8:8080/login";
 
@@ -113,8 +117,11 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     Toast.makeText(getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
                     goToList();
                 }
+
+
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -128,8 +135,6 @@ public class LoginActivity extends AppCompatActivity {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("username", username);
                     params.put("password", password);
-
-
                     return params;
                 }
 
@@ -138,6 +143,28 @@ public class LoginActivity extends AppCompatActivity {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("Content-Type", "application/x-www-form-urlencoded");
                     return params;
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response){
+                    String parsed;
+                    try {
+                        parsed = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+
+                        // Store the cookie value in header
+                        cookie=response.headers.get("Set-Cookie");
+
+                        //cookie value is only part of set-cookie
+                        int index=cookie.indexOf(';');
+                        cookie=cookie.substring(0,index);
+
+
+                        //test
+                        Log.i("cookie info",cookie);
+                    } catch (UnsupportedEncodingException e) {
+                        parsed = new String(response.data);
+                    }
+                    return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
                 }
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -165,6 +192,10 @@ public class LoginActivity extends AppCompatActivity {
         // Open list activity
         Intent intent = new Intent(this, ListActivity.class);
         startActivity(intent);
+    }
+
+    public String getCookie(){
+        return cookie;
     }
 
 }
