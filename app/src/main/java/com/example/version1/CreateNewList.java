@@ -3,6 +3,7 @@ package com.example.version1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -40,17 +41,25 @@ public class CreateNewList extends AppCompatActivity {
 
         btnInsertListPage = findViewById(R.id.btnInsertListPage);
         newListNameListPage = findViewById(R.id.newListNameListPage);
-        postRequest();
+        String listname = newListNameListPage.getText().toString();
+        btnInsertListPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                postRequestNewList(listname);
+            }
+        });
     }
-    public void postRequest(){
+    public void postRequestNewList(String listName){
         JSONObject js = new JSONObject();
         try {
-            js.put("password", "LeeWOPINGMOSTLIKEC444444444");
-            js.put("username", "LeeWOPINGMOSTLIKEC444444444");
+            //js.put("password", "LeeWOPINGMOSTLIKEC111111");
+            //js.put("username", "LeeWOPINGMOSTLIKEC111111");
+            js.put("title", "321312");
         } catch (JSONException e) {
             e.printStackTrace();
+            btnInsertListPage.setText("256");
         }
-        String url="http://188.166.255.8:8080/api/v1/users";
+        String url="http://188.166.255.8:8080/api/v1/lists";
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url, js,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -59,7 +68,7 @@ public class CreateNewList extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Login Success!"+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), ""+error, Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
