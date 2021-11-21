@@ -33,7 +33,7 @@ public class XPatchTask extends AppCompatActivity {
     private Button buttonUpdate, buttonDelete, buttonBack;
     private CheckBox checkbox;
     private EditText taskTitle, taskDetail;
-    private String taskId="619a130209162222acffa57e", oldTitle="new try", oldDetail="new try";
+    private String listId, taskId, oldTitle, oldDetail;
     public String cookie = LoginActivity.getCookie();
 
     @Override
@@ -43,21 +43,16 @@ public class XPatchTask extends AppCompatActivity {
 
         Intent intent = getIntent();
         String [] id = intent.getStringArrayExtra("SelectedTask");
-        String a ="";
-        for(int i = 0; i < id.length;i++){
-            a += (id[i]+"   |");
-        }
-        Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
-        // To show back button in actionbar
-        if(getSupportActionBar()!=null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+
+        taskId = id[0];
+        listId = id[1];
+        oldTitle = id[3];
+        oldDetail = id[2];
+
 
         buttonUpdate = findViewById(R.id.updateTask);
         buttonDelete = findViewById(R.id.update_delete);
-        /*
-        buttonBack = findViewById(R.id.post_back);
-         */
+
         checkbox = findViewById(R.id.doneCheck);
 
         taskTitle = findViewById(R.id.update_Title);
@@ -78,6 +73,7 @@ public class XPatchTask extends AppCompatActivity {
                 }
                 updateRequest(newTitle, newDetail, state);
                 Intent intent = new Intent(v.getContext(), AllTask.class );
+                intent.putExtra("ListNo", listId);
                 v.getContext().startActivity(intent);
             }
         });
@@ -87,19 +83,10 @@ public class XPatchTask extends AppCompatActivity {
             public void onClick(View v) {
                 deleteRequest();
                 Intent intent = new Intent(v.getContext(), AllTask.class );
+                intent.putExtra("ListNo", listId);
                 v.getContext().startActivity(intent);
             }
         });
-
-        /*
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), AllTask.class);
-                v.getContext().startActivity(intent);
-            }
-        });
-        */
     }
 
     public void updateRequest(String title, String detail, Boolean state){

@@ -44,9 +44,7 @@ public class XPostTask extends AppCompatActivity {
         listId = intent.getStringExtra("ListId");
 
         buttonCreate = findViewById(R.id.postTask);
-        /*
-        buttonBack = findViewById(R.id.post_back);
-         */
+
         taskTitle = findViewById(R.id.post_Title);
         taskDetail = findViewById(R.id.post_detail);
 
@@ -61,22 +59,11 @@ public class XPostTask extends AppCompatActivity {
                 v.getContext().startActivity(intent);
             }
         });
-
-        /*buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), AllTask.class);
-                v.getContext().startActivity(intent);
-            }
-        });*/
     }
 
     public void postRequest(String title, String detail){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        //String url = "https://reqres.in/api/users";
-
         String url = "http://188.166.255.8:8080/api/v1/tasks";
-
         JSONObject info = new JSONObject();
         try {
             info.put("title", ""+title);
