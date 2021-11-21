@@ -22,6 +22,9 @@ public class Eitem {
     public int getmImageResource(){
         return mImageResource;
     }
+    public String getmid(){
+        return mid;
+    }
     public String getText1(){
         return mText1;
     }

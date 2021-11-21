@@ -2,6 +2,7 @@ package com.example.version1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -99,5 +100,7 @@ public class CreateNewList extends AppCompatActivity {
             }
         };
         Volley.newRequestQueue(this).add(jsonObjReq);
+        Intent intent = new Intent(this, ListActivity.class);
+        startActivity(intent);
     }
 }

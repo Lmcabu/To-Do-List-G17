@@ -78,8 +78,9 @@ public class ListActivity extends AppCompatActivity {
         mAdapter.notifyItemChanged(position);
     }*/
 
-    public void openAllTaskPage(){
+    public void openAllTaskPage(int position){
         Intent intent = new Intent(this, AllTask.class);
+        intent.putExtra("ListNo", mEList.get(position).getmid());
         startActivity(intent);
     }
 
@@ -155,7 +156,7 @@ public class ListActivity extends AppCompatActivity {
         mAdapter.setOnItemClickListener(new eAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                openAllTaskPage();
+                openAllTaskPage(position);
             }
 
             @Override

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,11 @@ public class AllTask extends AppCompatActivity {
         setContentView(R.layout.activity_all_task);
         addAllTask();
         buildRecyclerView();
+
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("ListNo");
+        Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
+
 
         newTask = findViewById(R.id.button_insert_ALlTaskPage);
         newTask.setOnClickListener(new View.OnClickListener() {
