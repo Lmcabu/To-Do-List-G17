@@ -32,13 +32,16 @@ import java.util.Map;
 public class XPostTask extends AppCompatActivity {
     private Button buttonCreate, buttonBack;
     private EditText taskTitle, taskDetail;
-    private String listId="6199f34509162222acffa577";
+    private String listId;
     public String cookie = LoginActivity.getCookie();
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_posttask);
+
+        Intent intent = getIntent();
+        listId = intent.getStringExtra("ListId");
 
         buttonCreate = findViewById(R.id.postTask);
         /*
@@ -54,6 +57,7 @@ public class XPostTask extends AppCompatActivity {
                 String newDetail = taskDetail.getText().toString();
                 postRequest(newTitle, newDetail);
                 Intent intent = new Intent(v.getContext(), AllTask.class );
+                intent.putExtra("ListNo", listId);
                 v.getContext().startActivity(intent);
             }
         });

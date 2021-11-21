@@ -49,6 +49,7 @@ public class AllTask extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), XPostTask.class);
+                intent.putExtra("ListId", id);
                 v.getContext().startActivity(intent);
             }
         });
