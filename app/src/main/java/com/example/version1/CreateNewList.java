@@ -41,40 +41,42 @@ public class CreateNewList extends AppCompatActivity {
 
         btnInsertListPage = findViewById(R.id.btnInsertListPage);
         newListNameListPage = findViewById(R.id.newListNameListPage);
-        String listname = newListNameListPage.getText().toString();
+
         btnInsertListPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postRequestNewList(listname);
+                postRequestNewList();
             }
         });
     }
-    public void postRequestNewList(String listName){
+    public void postRequestNewList(){
         JSONObject js = new JSONObject();
         try {
+            String listName = newListNameListPage.getText().toString();
             //js.put("password", "LeeWOPINGMOSTLIKEC111111");
             //js.put("username", "LeeWOPINGMOSTLIKEC111111");
-            js.put("title", "321312");
+            js.put("title", ""+listName);
         } catch (JSONException e) {
             e.printStackTrace();
-            btnInsertListPage.setText("256");
+            btnInsertListPage.setText("");
         }
         String url="http://188.166.255.8:8080/api/v1/lists";
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url, js,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                btnInsertListPage.setText("123"+response);
+                Toast.makeText(getApplicationContext(), "Create New List success!", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), ""+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Create New List error!", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Cookie", "" + LoginActivity.getCookie());
                 return headers;
             }
             @Override

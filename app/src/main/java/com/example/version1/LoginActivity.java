@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     final int MIN_PASSWORD_LENGTH = 3;
 
 
-    String cookie;
+    static String cookie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public String getCookie(){
+    public static String getCookie(){
         return cookie;
     }
 
