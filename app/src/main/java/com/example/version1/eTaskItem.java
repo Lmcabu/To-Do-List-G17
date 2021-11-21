@@ -3,32 +3,43 @@ package com.example.version1;
 public class eTaskItem {
     private int mImageResource;
     private int mImageResource2;
-    private String mText1;
-    private String mText2;
+    private String mid;
+    private String mlistId;
+    private String mdetails;
+    private String mtitle;
 
-    public eTaskItem(int imageResource, int imageResource2, String text1, String text2){
+    public eTaskItem(int imageResource, int imageResource2, String id, String listId, String details, String title){
         mImageResource = imageResource;
         mImageResource2 = imageResource2;
-        mText1 = text1;
-        mText2 = text2;
+        mid = id;
+        mlistId = listId;
+        mdetails = details;
+        mtitle = title;
 
     }
 
-    public void changeText1(String text){
-        mText1 = text;
-    }
-
-    public int getmImageResource(){
+    public int getmImageResource() {
         return mImageResource;
     }
-    public int getmImageResource2(){
+
+    public int getmImageResource2() {
         return mImageResource2;
     }
-    public String getText1(){
-        return mText1;
+
+    public String getMid() {
+        return mid;
     }
-    public String getText2(){
-        return mText2;
+
+    public String getMlistId() {
+        return mlistId;
+    }
+
+    public String getMdetails() {
+        return mdetails;
+    }
+
+    public String getMtitle() {
+        return mtitle;
     }
 }
 

@@ -16,7 +16,7 @@ public class eAdapter extends RecyclerView.Adapter<eAdapter.ExampleViewHolder> {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener{
-        void onItemClick(int position);
+        void onEditClick(int position);
         void onDeleteClick(int position);
     }
 
@@ -45,7 +45,7 @@ public class eAdapter extends RecyclerView.Adapter<eAdapter.ExampleViewHolder> {
                     if(listener != null){
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
+                            listener.onEditClick(position);
                         }
                     }
                 }

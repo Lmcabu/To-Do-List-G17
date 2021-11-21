@@ -65,13 +65,18 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.ExampleV
 
         holder.mTaskImageView1.setImageResource(currentTask.getmImageResource());
         holder.mTaskImageView2.setImageResource(currentTask.getmImageResource2());
-        holder.mTaskTextView.setText(currentTask.getText1());
-        holder.mTaskTextView2.setText(currentTask.getText2());
+        holder.mTaskTextView.setText(currentTask.getMtitle());
+        holder.mTaskTextView2.setText("Detail: \n"+currentTask.getMdetails());
     }
 
     @Override
     public int getItemCount() {
-        return mTaskItem.size();
+        if(mTaskItem==null || mTaskItem.size()==0 ) {
+            return 0;
+        }
+        else{
+            return mTaskItem.size();
+        }
     }
 
 }

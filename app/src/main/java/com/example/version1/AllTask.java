@@ -66,9 +66,19 @@ public class AllTask extends AppCompatActivity {
          */
     }
     public void addAllTask(){
-        eAllTask = new ArrayList<>();
-        eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_close, "Task Name", "Detail: XXXX"));
-        eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_check, "Task Name", "Detail: XXXX"));
+        //eAllTask = new ArrayList<>();
+        //eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_close, "Task Name", "Detail: XXXX"));
+        //eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_check, "Task Name", "Detail: XXXX"));
+    }
+    public void openXPatchTask(int position){
+        Intent intent = new Intent(this, XPatchTask.class);
+        String [] selectedTask = new String[4];
+        selectedTask[0] = eAllTask.get(position).getMid();
+        selectedTask[1] = eAllTask.get(position).getMlistId();
+        selectedTask[2] = eAllTask.get(position).getMdetails();
+        selectedTask[3] = eAllTask.get(position).getMtitle();
+        intent.putExtra("SelectedTask", selectedTask);
+        startActivity(intent);
     }
     public void buildRecyclerView(){
         mRecyclerViewTask = findViewById(R.id.recyclerViewAllTaskPage);
@@ -78,6 +88,21 @@ public class AllTask extends AppCompatActivity {
 
         mRecyclerViewTask.setLayoutManager(mLayoutMManagerTask);
         mRecyclerViewTask.setAdapter(mallTaskAdapter);
+
+        mallTaskAdapter.setOnItemClickListener(new AllTaskAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                openXPatchTask(position);
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+            }
+        });
+
+
+
+
     }
     public void getAllTask(String id){
         String url="http://188.166.255.8:8080/api/v1/lists/"+id;
@@ -92,10 +117,10 @@ public class AllTask extends AppCompatActivity {
                     for (int i=0; i < listAllTask.length(); i++){
                         JSONObject aTask = listAllTask.getJSONObject(i);
                         if (aTask.getBoolean("done") == true ){
-                            eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_check, aTask.getString("title"), "Detail: "+aTask.getString("details")));
+                            eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_check, aTask.getString("id"),aTask.getString("listId"),aTask.getString("details"), aTask.getString("title")));
                         }
                         else{
-                            eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_close, aTask.getString("title"), "Detail: "+aTask.getString("details")));
+                            eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_close, aTask.getString("id"),aTask.getString("listId"),aTask.getString("details"), aTask.getString("title")));
                         }
                     }
                         //eAllTask.add(new Eitem(R.drawable.ic_android, id, listName, incompleted , completed));

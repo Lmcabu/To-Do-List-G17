@@ -196,7 +196,7 @@ public class ListActivity extends AppCompatActivity {
 
         mAdapter.setOnItemClickListener(new eAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onEditClick(int position) {
                 openAllTaskPage(position);
             }
 

@@ -41,6 +41,13 @@ public class XPatchTask extends AppCompatActivity {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_patchtask);
 
+        Intent intent = getIntent();
+        String [] id = intent.getStringArrayExtra("SelectedTask");
+        String a ="";
+        for(int i = 0; i < id.length;i++){
+            a += (id[i]+"   |");
+        }
+        Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
         // To show back button in actionbar
         if(getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
