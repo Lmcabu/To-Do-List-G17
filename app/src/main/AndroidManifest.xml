@@ -19,9 +19,7 @@
         <activity
             android:name=".AllTask"
             android:exported="true" />
-        <activity
-            android:name=".List2"
-            android:exported="true" />
+
         <activity
             android:name=".ListActivity"
             android:exported="true" />
@@ -30,6 +28,12 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".XPostTask"
+            android:exported="false" />
+        <activity
+            android:name=".XPatchTask"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
