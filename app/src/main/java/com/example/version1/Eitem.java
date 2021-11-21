@@ -2,12 +2,14 @@ package com.example.version1;
 
 public class Eitem {
     private int mImageResource;
+    private String mid;
     private String mText1;
     private String mText2;
     private String mText3;
 
-    public Eitem(int imageResource, String text1, String text2, String text3){
+    public Eitem(int imageResource, String id, String text1, String text2, String text3){
         mImageResource = imageResource;
+        mid = id;
         mText1 = text1;
         mText2 = text2;
         mText3 = text3;

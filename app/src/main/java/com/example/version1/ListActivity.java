@@ -6,18 +6,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -37,36 +56,8 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        createExampleList();
-        buildRecyclerView();
-        setButtons();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://188.166.255.8:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        ListJsonAPI listJsonApi = retrofit.create(ListJsonAPI.class);
-
-        Call<List<ListData>> call = listJsonApi.getListData();
-
-        call.enqueue(new Callback<List<ListData>>() {
-            @Override
-            public void onResponse(Call<List<ListData>> call, Response<List<ListData>> response) {
-                if(response.isSuccessful()){
-                    mEList = new ArrayList<>();
-                    List<ListData> listDatas = response.body();
-                    for (ListData alistData : listDatas){
-                        mEList.add(new Eitem(R.drawable.ic_android, ""+alistData.getTitle(), "Incompleted:", "Completed:" ));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ListData>> call, Throwable t) {
-                //buttonGoInsertListPage.setText("123123123");
-                buttonGoInsertListPage.setText(t.getMessage());
-            }
-        });
+        //createExampleList();
+        getAllList();
 
     }
     public void openNewListPage(){
@@ -74,7 +65,7 @@ public class ListActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void insertItem(int position){
-        mEList.add(position, new Eitem(R.drawable.ic_android, "New Item At Position"+position, "This is XXX\n dwadwa\n dawdwa\n" , "Text information!"));
+        mEList.add(position, new Eitem(R.drawable.ic_android, "1","New Item At Position"+position, "This is XXX\n dwadwa\n dawdwa\n" , "Text information!"));
         mAdapter.notifyItemInserted(position);
     }
     public void removeItem(int position){
@@ -94,8 +85,63 @@ public class ListActivity extends AppCompatActivity {
 
     public void createExampleList(){
         mEList = new ArrayList<>();
-        mEList.add(new Eitem(R.drawable.ic_android, "Task Name", "Incompleted" , "Completed:" ));
-        mEList.add(new Eitem(R.drawable.ic_baseline_access_alarms, "Task Name", "Incompleted:" , "Completed:"));
+        mEList.add(new Eitem(R.drawable.ic_android, "1", "Task Name", "Incompleted" , "Completed:" ));
+        mEList.add(new Eitem(R.drawable.ic_baseline_access_alarms,"1", "Task Name", "Incompleted:" , "Completed:"));
+    }
+    public void getAllList(){
+        String url="http://188.166.255.8:8080/api/v1/lists";
+        JsonArrayRequest jsonObjReq = new JsonArrayRequest (Request.Method.GET, url, null, new com.android.volley.Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    mEList = new ArrayList<>();
+                    String id ="";
+                    String listName = "";
+                    String incompleted;
+                    String completed;
+                    JSONObject jresponse;
+                    JSONArray listAllTask;
+                    //Toast.makeText(getApplicationContext(), "Create New List success!" +response.getJSONObject(0).getString("id"), Toast.LENGTH_SHORT).show();
+                    for(int i = 0; i < response.length(); i++){
+                        id = response.getJSONObject(i).getString("id");
+                        listName = response.getJSONObject(i).getString("title");
+                        listAllTask = response.getJSONObject(i).getJSONArray("tasks");
+                        incompleted = "Incompleted:";
+                        completed = "\nCompleted:";
+                        for (int y=0; y < listAllTask.length(); y++){
+                            JSONObject aTask = listAllTask.getJSONObject(y);
+                            if (aTask.getBoolean("done") == true ){
+                                completed += "\n"+aTask.getString("title");
+                            }
+                            else{
+                                incompleted += "\n"+aTask.getString("title");
+                            }
+                        }
+                        mEList.add(new Eitem(R.drawable.ic_android, id, listName, incompleted , completed));
+                    }
+                    buildRecyclerView();
+                    setButtons();
+
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //Toast.makeText(getApplicationContext(), "Create New List success!" +response, Toast.LENGTH_SHORT).show();
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Create New List error!"+error, Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Cookie", "" + LoginActivity.getCookie());
+                return headers;
+            }
+        };
+        Volley.newRequestQueue(this).add(jsonObjReq);
     }
     public void buildRecyclerView(){
         mRecyclerView = findViewById(R.id.recyclerView);

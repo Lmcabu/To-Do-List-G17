@@ -86,6 +86,11 @@ public class eAdapter extends RecyclerView.Adapter<eAdapter.ExampleViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mEList.size();
+        if(mEList==null || mEList.size()==0 ) {
+            return 0;
+        }
+        else{
+            return mEList.size();
+        }
     }
 }
