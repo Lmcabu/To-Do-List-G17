@@ -35,6 +35,17 @@ public class AllTask extends AppCompatActivity {
                 v.getContext().startActivity(intent);
             }
         });
+
+        /*
+        editTask = findViewById(R.id.demo_edit);
+        editTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), XPatchTask.class);
+                v.getContext().startActivity(intent);
+            }
+        });
+         */
     }
     public void addAllTask(){
         eAllTask = new ArrayList<>();
