@@ -69,6 +69,47 @@ public class ListActivity extends AppCompatActivity {
         mAdapter.notifyItemInserted(position);
     }
     public void removeItem(int position){
+        String url="http://188.166.255.8:8080/api/v1/lists/"+mEList.get(position).getmid();
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.DELETE, url, null,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(getApplicationContext(), "Delete List success!", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Delete List error!", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Cookie", "" + LoginActivity.getCookie());
+                return headers;
+            }
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+
+                    JSONObject result = null;
+
+                    if (jsonString != null && jsonString.length() > 0)
+                        result = new JSONObject(jsonString);
+
+                    return Response.success(result,
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
+            }
+        };
+        Volley.newRequestQueue(this).add(jsonObjReq);
+        //Intent intent = new Intent(this, ListActivity.class);
+        //startActivity(intent);
         mEList.remove(position);
         mAdapter.notifyItemRemoved(position);
     }
