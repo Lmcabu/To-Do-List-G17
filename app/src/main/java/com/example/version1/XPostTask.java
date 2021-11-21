@@ -2,36 +2,43 @@ package com.example.version1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class XPostTask extends AppCompatActivity {
     private Button buttonCreate, buttonBack;
     private EditText taskTitle, taskDetail;
-    //private String listId="61996683c80418710bb0b3bc";
+    private String listId="6199f34509162222acffa577";
+    public String cookie = LoginActivity.getCookie();
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_posttask);
-
-        // To show back button in actionbar
-        if(getSupportActionBar()!=null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         buttonCreate = findViewById(R.id.postTask);
         /*
@@ -66,28 +73,56 @@ public class XPostTask extends AppCompatActivity {
 
         String url = "http://188.166.255.8:8080/api/v1/tasks";
 
-        StringRequest stringRequest= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        JSONObject info = new JSONObject();
+        try {
+            info.put("title", ""+title);
+            info.put("details", ""+detail);
+            info.put("listId", ""+listId);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsRequest= new JsonObjectRequest(Request.Method.POST, url, info, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
-                System.out.println("asdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdaddasdasdasdasdasd");
+            public void onResponse(JSONObject response) {
+                Toast.makeText(getApplicationContext(), "Create Success!", Toast.LENGTH_SHORT).show();
                 System.out.println(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                Toast.makeText(getApplicationContext(), "Create failed!", Toast.LENGTH_SHORT).show();
+                System.out.println(error);
             }
         }){
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("title", title);
-                params.put("details", detail);
-                //params.put("listId", listId);
-                System.out.println("asdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdaddasdasdasdasdasd");
-                return params;
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Cookie", ""+cookie);
+                System.out.println("header done: "+LoginActivity.getCookie());
+                return headers;
             }
-        };
-        requestQueue.add(stringRequest);
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+
+                    JSONObject result = null;
+
+                    if (jsonString != null && jsonString.length() > 0)
+                        result = new JSONObject(jsonString);
+
+                    return Response.success(result,
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
+            }
+        }
+        ;
+        requestQueue.add(jsRequest);
     }
 }

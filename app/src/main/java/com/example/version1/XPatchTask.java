@@ -6,16 +6,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +33,8 @@ public class XPatchTask extends AppCompatActivity {
     private Button buttonUpdate, buttonDelete, buttonBack;
     private CheckBox checkbox;
     private EditText taskTitle, taskDetail;
-    private String taskId, oldTitle, oldDetail;
+    private String taskId="619a076009162222acffa578", oldTitle="change", oldDetail="change";
+    public String cookie = LoginActivity.getCookie();
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -53,9 +64,10 @@ public class XPatchTask extends AppCompatActivity {
             public void onClick(View v) {
                 String newTitle = taskTitle.getText().toString();
                 String newDetail = taskDetail.getText().toString();
-                String state ="false";
+                Boolean state = false;
                 if (checkbox.isChecked()){
-                    state = "true";
+                    System.out.println("checked the box");
+                    state = true;
                 }
                 updateRequest(newTitle, newDetail, state);
                 Intent intent = new Intent(v.getContext(), AllTask.class );
@@ -83,37 +95,65 @@ public class XPatchTask extends AppCompatActivity {
         */
     }
 
-    public void updateRequest(String title, String detail, String state){
+    public void updateRequest(String title, String detail, Boolean state){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         String url = "http://188.166.255.8:8080/api/v1/tasks";
 
-        StringRequest stringRequest= new StringRequest(Request.Method.PATCH, url, new Response.Listener<String>() {
+        JSONObject info = new JSONObject();
+        try {
+            info.put("title", ""+title);
+            info.put("details", ""+detail);
+            info.put("done", ""+state);
+            info.put("id", ""+taskId);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsRequest= new JsonObjectRequest(Request.Method.PATCH, url, info, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
-                System.out.println("updateasdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdaddasdasdasdasdasd");
+            public void onResponse(JSONObject response) {
+                Toast.makeText(getApplicationContext(), "Update Success!", Toast.LENGTH_SHORT).show();
                 System.out.println(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                Toast.makeText(getApplicationContext(), "Update failed!", Toast.LENGTH_SHORT).show();
+                System.out.println(error);
             }
         }){
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("title", title);
-                params.put("details", detail);
-                params.put("done", state);
-                //params.put("listId", listId);
-                System.out.println("updateasdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdaddasdasdasdasdasd");
-                return params;
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Cookie", ""+cookie);
+                System.out.println("header done: "+cookie);
+                return headers;
+            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+
+                    JSONObject result = null;
+
+                    if (jsonString != null && jsonString.length() > 0)
+                        result = new JSONObject(jsonString);
+
+                    return Response.success(result,
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
             }
 
 
         };
-        requestQueue.add(stringRequest);
+        requestQueue.add(jsRequest);
     }
 
     public void deleteRequest(){
@@ -122,15 +162,25 @@ public class XPatchTask extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("deleteasdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdaddasdasdasdasdasd");
+                Toast.makeText(getApplicationContext(), "Delete Success!", Toast.LENGTH_SHORT).show();
                 System.out.println(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                Toast.makeText(getApplicationContext(), "Delete failed!", Toast.LENGTH_SHORT).show();
+                System.out.println(error);
             }
-        });
+        }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Cookie",""+cookie);
+                return headers;
+            }
+        };
         requestQueue.add(stringRequest);
     }
 }
