@@ -43,12 +43,20 @@ public class CreateNewList extends AppCompatActivity {
         btnInsertListPage = findViewById(R.id.btnInsertListPage);
         newListNameListPage = findViewById(R.id.newListNameListPage);
 
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         btnInsertListPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 postRequestNewList();
             }
         });
+    }
+    public boolean onSupportNavigateUp(){
+        finish();
+        return super.onSupportNavigateUp();
     }
     public void postRequestNewList(){
         JSONObject js = new JSONObject();

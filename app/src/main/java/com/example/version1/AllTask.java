@@ -44,6 +44,10 @@ public class AllTask extends AppCompatActivity {
         String id = intent.getStringExtra("ListNo");
         getAllTask(id);
 
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         newTask = findViewById(R.id.button_insert_ALlTaskPage);
         newTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +68,10 @@ public class AllTask extends AppCompatActivity {
             }
         });
          */
+    }
+    public boolean onSupportNavigateUp(){
+        finish();
+        return super.onSupportNavigateUp();
     }
     public void addAllTask(){
         //eAllTask = new ArrayList<>();

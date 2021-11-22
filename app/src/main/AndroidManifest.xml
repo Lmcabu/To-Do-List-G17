@@ -14,15 +14,21 @@
         android:theme="@style/Theme.Version1">
         <activity
             android:name=".CreateNewList"
-            android:exported="true" />
+            android:exported="false"
+            android:label="New List"
+            />
 
         <activity
             android:name=".AllTask"
-            android:exported="true" />
+            android:exported="false"
+            android:label="Task Screen"
+            />
 
         <activity
             android:name=".ListActivity"
-            android:exported="true" />
+            android:exported="false"
+            android:label="List Screen"
+            />
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />

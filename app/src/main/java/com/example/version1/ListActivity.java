@@ -56,9 +56,17 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         //createExampleList();
         getAllList();
 
+    }
+    public boolean onSupportNavigateUp(){
+        finish();
+        return super.onSupportNavigateUp();
     }
     public void openNewListPage(){
         Intent intent = new Intent(this, CreateNewList.class);
