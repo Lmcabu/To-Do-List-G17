@@ -22,6 +22,8 @@
         <entry key="..\:/Users/15477/Desktop/version1/version1/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
         <entry key="..\:/Users/15477/Desktop/version1/version1/app/src/main/res/layout/fragment_example_dialog.xml" value="0.1" />
         <entry key="..\:/Users/15477/Desktop/version1/version1/app/src/main/res/layout/item.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/To-Do-List-G17-2/app/src/main/res/layout/activity_patchtask.xml" value="0.21197916666666666" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/To-Do-List-G17-2/app/src/main/res/layout/activity_posttask.xml" value="0.21197916666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/To-Do-List-G17/app/src/main/res/drawable/ic_delete.xml" value="0.12037037037037036" />
         <entry key="..\:/Users/user/AndroidStudioProjects/To-Do-List-G17/app/src/main/res/layout/activity_UselessList.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/To-Do-List-G17/app/src/main/res/layout/activity_all_task.xml" value="0.3851851851851852" />
@@ -51,10 +53,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_add_circle_outline.xml" />
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
