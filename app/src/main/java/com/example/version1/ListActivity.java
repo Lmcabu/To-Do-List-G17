@@ -156,15 +156,15 @@ public class ListActivity extends AppCompatActivity {
                         id = response.getJSONObject(i).getString("id");
                         listName = response.getJSONObject(i).getString("title");
                         listAllTask = response.getJSONObject(i).getJSONArray("tasks");
-                        incompleted = "Incompleted:";
-                        completed = "\nCompleted:";
+                        incompleted = "";
+                        completed = "";
                         for (int y=0; y < listAllTask.length(); y++){
                             JSONObject aTask = listAllTask.getJSONObject(y);
                             if (aTask.getBoolean("done") == true ){
-                                completed += "\n"+aTask.getString("title");
+                                completed += "     "+aTask.getString("title") +"\n";
                             }
                             else{
-                                incompleted += "\n"+aTask.getString("title");
+                                incompleted += "    "+aTask.getString("title")+"\n";
                             }
                         }
                         mEList.add(new Eitem(R.drawable.ic_android, id, listName, incompleted , completed));

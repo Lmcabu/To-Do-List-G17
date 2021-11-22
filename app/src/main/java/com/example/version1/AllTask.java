@@ -125,10 +125,10 @@ public class AllTask extends AppCompatActivity {
                     for (int i=0; i < listAllTask.length(); i++){
                         JSONObject aTask = listAllTask.getJSONObject(i);
                         if (aTask.getBoolean("done") == true ){
-                            eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_check, aTask.getString("id"),aTask.getString("listId"),aTask.getString("details"), aTask.getString("title")));
+                            eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_check_box, aTask.getString("id"),aTask.getString("listId"),aTask.getString("details"), aTask.getString("title")));
                         }
                         else{
-                            eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_close, aTask.getString("id"),aTask.getString("listId"),aTask.getString("details"), aTask.getString("title")));
+                            eAllTask.add(new eTaskItem(R.drawable.ic_android, R.drawable.ic_baseline_check_box_outline_blank, aTask.getString("id"),aTask.getString("listId"),aTask.getString("details"), aTask.getString("title")));
                         }
                     }
                         //eAllTask.add(new Eitem(R.drawable.ic_android, id, listName, incompleted , completed));

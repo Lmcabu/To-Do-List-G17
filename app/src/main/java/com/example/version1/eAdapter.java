@@ -33,7 +33,7 @@ public class eAdapter extends RecyclerView.Adapter<eAdapter.ExampleViewHolder> {
 
         public ExampleViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.imageView);
+            //mImageView = itemView.findViewById(R.id.imageView);
             mTextView = itemView.findViewById(R.id.textView);
             mTextView2 = itemView.findViewById(R.id.textView2);
             mTextView3 = itemView.findViewById(R.id.textView3);
@@ -78,7 +78,7 @@ public class eAdapter extends RecyclerView.Adapter<eAdapter.ExampleViewHolder> {
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
         Eitem currentItem = mEList.get(position);
 
-        holder.mImageView.setImageResource(currentItem.getmImageResource());
+        //holder.mImageView.setImageResource(currentItem.getmImageResource());
         holder.mTextView.setText(currentItem.getText1());
         holder.mTextView2.setText(currentItem.getText2());
         holder.mTextView3.setText(currentItem.getText3());
